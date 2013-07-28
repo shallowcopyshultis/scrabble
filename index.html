@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset=utf-8 />
+	<title>Scrabblesmith</title>
+	<link rel="stylesheet" type="text/css" href="format.css">
+	<!--[if lt IE 9]>
+		<script src="html5shiv.js"></script>
+		<script src="html5shiv-printshiv.js"></script>
+	<![endif]-->
+	<!--html5 shivs from https://github.com/aFarkas/html5shiv-->
+	<script src="jquery-1.7.2.js"></script>
+	<script src="jquery-ui-1.8.22.custom.min.js"></script>
+
+</head>
+
+<body>
+	<div id='letterDiv'>
+		<br>
+		<table class='center'>
+			<tr>
+				<td><img class='draggableImg' src='icons/A.png' value='A'/></td>
+				<td><img class='draggableImg' src='icons/B.png' value='B'/></td>
+				<td><img class='draggableImg' src='icons/C.png' value='C'/></td>
+				<td><img class='draggableImg' src='icons/D.png' value='D'/></td>
+				<td><img class='draggableImg' src='icons/E.png' value='E'/></td>
+				<td><img class='draggableImg' src='icons/F.png' value='F'/></td>
+				<td><img class='draggableImg' src='icons/G.png' value='G'/></td>
+				<td><img class='draggableImg' src='icons/H.png' value='H'/></td>
+				<td><img class='draggableImg' src='icons/I.png' value='I'/></td>
+				<td><img class='draggableImg' src='icons/J.png' value='J'/></td>
+				<td><img class='draggableImg' src='icons/K.png' value='K'/></td>
+				<td><img class='draggableImg' src='icons/L.png' value='L'/></td>
+				<td><img class='draggableImg' src='icons/M.png' value='M'/></td>
+			<tr>
+				<td><img class='draggableImg' src='icons/N.png' value='N'/></td>
+				<td><img class='draggableImg' src='icons/O.png' value='O'/></td>
+				<td><img class='draggableImg' src='icons/P.png' value='P'/></td>
+				<td><img class='draggableImg' src='icons/Q.png' value='Q'/></td>
+				<td><img class='draggableImg' src='icons/R.png' value='R'/></td>
+				<td><img class='draggableImg' src='icons/S.png' value='S'/></td>
+				<td><img class='draggableImg' src='icons/T.png' value='T'/></td>
+				<td><img class='draggableImg' src='icons/U.png' value='U'/></td>
+				<td><img class='draggableImg' src='icons/V.png' value='V'/></td>
+				<td><img class='draggableImg' src='icons/W.png' value='W'/></td>
+				<td><img class='draggableImg' src='icons/X.png' value='X'/></td>
+				<td><img class='draggableImg' src='icons/Y.png' value='Y'/></td>
+				<td><img class='draggableImg' src='icons/Z.png' value='Z'/></td>
+			</tr>
+		</table>
+	</div>
+	<div id='floatDiv' class='outerWrapShell'>
+		<div class='innerWrapShell'>
+			<div id='userDiv' class='options'>
+				<h1>Your Letters!!</h1>
+				Just drag and drop from the top! (<i>Ctrl+Z</i> to undo)
+				<br><br>
+				<table class='center'>
+					<tr>
+						<td><div class="userTile"></div></td>
+						<td><div class="userTile"></div></td>
+						<td><div class="userTile"></div></td>
+						<td><div class="userTile"></div></td>
+						<td><div class="userTile"></div></td>
+						<td><div class="userTile"></div></td>
+						<td><div class="userTile"></div></td>
+					<tr>
+				</table>
+				<div id="optionDiv">
+					<br>
+					<div id="optionBtnDiv">
+						<button type="button" id="optionButton">What're my options?</button>
+					</div>
+					<div id='optionData' class='optionData'></div>
+				</div>
+			</div>
+			
+			<div id='boardDiv' class='board'>
+				<h1>The board!</h1>
+				No need to drag--click a tile and type away!<br>
+				Note: Backspace and Delete don't work--use <i>Ctrl+Z</i> to undo.
+				<table id='table' class='center'>
+					<tr>
+						<td><div class='boardTile' id='tile00'></div></td>
+						<td><div class='boardTile' id='tile01'></div></td>
+						<td><div class='boardTile' id='tile02'></div></td>
+						<td><div class='boardTile' id='tile03'></div></td>
+						<td><div class='boardTile' id='tile04'></div></td>
+						<td><div class='boardTile' id='tile05'></div></td>
+						<td><div class='boardTile' id='tile06'></div></td>
+						<td><div class='boardTile' id='tile07'></div></td>
+						<td><div class='boardTile' id='tile08'></div></td>
+						<td><div class='boardTile' id='tile09'></div></td>
+						<td><div class='boardTile' id='tile10'></div></td>
+						<td><div class='boardTile' id='tile11'></div></td>
+						<td><div class='boardTile' id='tile12'></div></td>
+						<td><div class='boardTile' id='tile13'></div></td>
+						<td><div class='boardTile' id='tile14'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile15'></div></td>
+						<td><div class='boardTile' id='tile16'></div></td>
+						<td><div class='boardTile' id='tile17'></div></td>
+						<td><div class='boardTile' id='tile18'></div></td>
+						<td><div class='boardTile' id='tile19'></div></td>
+						<td><div class='boardTile' id='tile20'></div></td>
+						<td><div class='boardTile' id='tile21'></div></td>
+						<td><div class='boardTile' id='tile22'></div></td>
+						<td><div class='boardTile' id='tile23'></div></td>
+						<td><div class='boardTile' id='tile24'></div></td>
+						<td><div class='boardTile' id='tile25'></div></td>
+						<td><div class='boardTile' id='tile26'></div></td>
+						<td><div class='boardTile' id='tile27'></div></td>
+						<td><div class='boardTile' id='tile28'></div></td>
+						<td><div class='boardTile' id='tile29'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile30'></div></td>
+						<td><div class='boardTile' id='tile31'></div></td>
+						<td><div class='boardTile' id='tile32'></div></td>
+						<td><div class='boardTile' id='tile33'></div></td>
+						<td><div class='boardTile' id='tile34'></div></td>
+						<td><div class='boardTile' id='tile35'></div></td>
+						<td><div class='boardTile' id='tile36'></div></td>
+						<td><div class='boardTile' id='tile37'></div></td>
+						<td><div class='boardTile' id='tile38'></div></td>
+						<td><div class='boardTile' id='tile39'></div></td>
+						<td><div class='boardTile' id='tile40'></div></td>
+						<td><div class='boardTile' id='tile41'></div></td>
+						<td><div class='boardTile' id='tile42'></div></td>
+						<td><div class='boardTile' id='tile43'></div></td>
+						<td><div class='boardTile' id='tile44'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile45'></div></td>
+						<td><div class='boardTile' id='tile46'></div></td>
+						<td><div class='boardTile' id='tile47'></div></td>
+						<td><div class='boardTile' id='tile48'></div></td>
+						<td><div class='boardTile' id='tile49'></div></td>
+						<td><div class='boardTile' id='tile50'></div></td>
+						<td><div class='boardTile' id='tile51'></div></td>
+						<td><div class='boardTile' id='tile52'></div></td>
+						<td><div class='boardTile' id='tile53'></div></td>
+						<td><div class='boardTile' id='tile54'></div></td>
+						<td><div class='boardTile' id='tile55'></div></td>
+						<td><div class='boardTile' id='tile56'></div></td>
+						<td><div class='boardTile' id='tile57'></div></td>
+						<td><div class='boardTile' id='tile58'></div></td>
+						<td><div class='boardTile' id='tile59'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile60'></div></td>
+						<td><div class='boardTile' id='tile61'></div></td>
+						<td><div class='boardTile' id='tile62'></div></td>
+						<td><div class='boardTile' id='tile63'></div></td>
+						<td><div class='boardTile' id='tile64'></div></td>
+						<td><div class='boardTile' id='tile65'></div></td>
+						<td><div class='boardTile' id='tile66'></div></td>
+						<td><div class='boardTile' id='tile67'></div></td>
+						<td><div class='boardTile' id='tile68'></div></td>
+						<td><div class='boardTile' id='tile69'></div></td>
+						<td><div class='boardTile' id='tile70'></div></td>
+						<td><div class='boardTile' id='tile71'></div></td>
+						<td><div class='boardTile' id='tile72'></div></td>
+						<td><div class='boardTile' id='tile73'></div></td>
+						<td><div class='boardTile' id='tile74'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile75'></div></td>
+						<td><div class='boardTile' id='tile76'></div></td>
+						<td><div class='boardTile' id='tile77'></div></td>
+						<td><div class='boardTile' id='tile78'></div></td>
+						<td><div class='boardTile' id='tile79'></div></td>
+						<td><div class='boardTile' id='tile80'></div></td>
+						<td><div class='boardTile' id='tile81'></div></td>
+						<td><div class='boardTile' id='tile82'></div></td>
+						<td><div class='boardTile' id='tile83'></div></td>
+						<td><div class='boardTile' id='tile84'></div></td>
+						<td><div class='boardTile' id='tile85'></div></td>
+						<td><div class='boardTile' id='tile86'></div></td>
+						<td><div class='boardTile' id='tile87'></div></td>
+						<td><div class='boardTile' id='tile88'></div></td>
+						<td><div class='boardTile' id='tile89'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile90'></div></td>
+						<td><div class='boardTile' id='tile91'></div></td>
+						<td><div class='boardTile' id='tile92'></div></td>
+						<td><div class='boardTile' id='tile93'></div></td>
+						<td><div class='boardTile' id='tile94'></div></td>
+						<td><div class='boardTile' id='tile95'></div></td>
+						<td><div class='boardTile' id='tile96'></div></td>
+						<td><div class='boardTile' id='tile97'></div></td>
+						<td><div class='boardTile' id='tile98'></div></td>
+						<td><div class='boardTile' id='tile99'></div></td>
+						<td><div class='boardTile' id='tile100'></div></td>
+						<td><div class='boardTile' id='tile101'></div></td>
+						<td><div class='boardTile' id='tile102'></div></td>
+						<td><div class='boardTile' id='tile103'></div></td>
+						<td><div class='boardTile' id='tile104'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile105'></div></td>
+						<td><div class='boardTile' id='tile106'></div></td>
+						<td><div class='boardTile' id='tile107'></div></td>
+						<td><div class='boardTile' id='tile108'></div></td>
+						<td><div class='boardTile' id='tile199'></div></td>
+						<td><div class='boardTile' id='tile110'></div></td>
+						<td><div class='boardTile' id='tile111'></div></td>
+						<td><div class='boardTile' id='tile112'></div></td>
+						<td><div class='boardTile' id='tile113'></div></td>
+						<td><div class='boardTile' id='tile114'></div></td>
+						<td><div class='boardTile' id='tile115'></div></td>
+						<td><div class='boardTile' id='tile116'></div></td>
+						<td><div class='boardTile' id='tile117'></div></td>
+						<td><div class='boardTile' id='tile118'></div></td>
+						<td><div class='boardTile' id='tile119'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile120'></div></td>
+						<td><div class='boardTile' id='tile121'></div></td>
+						<td><div class='boardTile' id='tile122'></div></td>
+						<td><div class='boardTile' id='tile123'></div></td>
+						<td><div class='boardTile' id='tile124'></div></td>
+						<td><div class='boardTile' id='tile125'></div></td>
+						<td><div class='boardTile' id='tile126'></div></td>
+						<td><div class='boardTile' id='tile127'></div></td>
+						<td><div class='boardTile' id='tile128'></div></td>
+						<td><div class='boardTile' id='tile129'></div></td>
+						<td><div class='boardTile' id='tile130'></div></td>
+						<td><div class='boardTile' id='tile131'></div></td>
+						<td><div class='boardTile' id='tile132'></div></td>
+						<td><div class='boardTile' id='tile133'></div></td>
+						<td><div class='boardTile' id='tile134'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile135'></div></td>
+						<td><div class='boardTile' id='tile136'></div></td>
+						<td><div class='boardTile' id='tile137'></div></td>
+						<td><div class='boardTile' id='tile138'></div></td>
+						<td><div class='boardTile' id='tile139'></div></td>
+						<td><div class='boardTile' id='tile140'></div></td>
+						<td><div class='boardTile' id='tile141'></div></td>
+						<td><div class='boardTile' id='tile142'></div></td>
+						<td><div class='boardTile' id='tile143'></div></td>
+						<td><div class='boardTile' id='tile144'></div></td>
+						<td><div class='boardTile' id='tile145'></div></td>
+						<td><div class='boardTile' id='tile146'></div></td>
+						<td><div class='boardTile' id='tile147'></div></td>
+						<td><div class='boardTile' id='tile148'></div></td>
+						<td><div class='boardTile' id='tile149'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile150'></div></td>
+						<td><div class='boardTile' id='tile151'></div></td>
+						<td><div class='boardTile' id='tile152'></div></td>
+						<td><div class='boardTile' id='tile153'></div></td>
+						<td><div class='boardTile' id='tile154'></div></td>
+						<td><div class='boardTile' id='tile155'></div></td>
+						<td><div class='boardTile' id='tile156'></div></td>
+						<td><div class='boardTile' id='tile157'></div></td>
+						<td><div class='boardTile' id='tile158'></div></td>
+						<td><div class='boardTile' id='tile159'></div></td>
+						<td><div class='boardTile' id='tile160'></div></td>
+						<td><div class='boardTile' id='tile161'></div></td>
+						<td><div class='boardTile' id='tile162'></div></td>
+						<td><div class='boardTile' id='tile163'></div></td>
+						<td><div class='boardTile' id='tile164'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile165'></div></td>
+						<td><div class='boardTile' id='tile166'></div></td>
+						<td><div class='boardTile' id='tile167'></div></td>
+						<td><div class='boardTile' id='tile168'></div></td>
+						<td><div class='boardTile' id='tile169'></div></td>
+						<td><div class='boardTile' id='tile170'></div></td>
+						<td><div class='boardTile' id='tile171'></div></td>
+						<td><div class='boardTile' id='tile172'></div></td>
+						<td><div class='boardTile' id='tile173'></div></td>
+						<td><div class='boardTile' id='tile174'></div></td>
+						<td><div class='boardTile' id='tile175'></div></td>
+						<td><div class='boardTile' id='tile176'></div></td>
+						<td><div class='boardTile' id='tile177'></div></td>
+						<td><div class='boardTile' id='tile178'></div></td>
+						<td><div class='boardTile' id='tile179'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile180'></div></td>
+						<td><div class='boardTile' id='tile181'></div></td>
+						<td><div class='boardTile' id='tile182'></div></td>
+						<td><div class='boardTile' id='tile183'></div></td>
+						<td><div class='boardTile' id='tile184'></div></td>
+						<td><div class='boardTile' id='tile185'></div></td>
+						<td><div class='boardTile' id='tile186'></div></td>
+						<td><div class='boardTile' id='tile187'></div></td>
+						<td><div class='boardTile' id='tile188'></div></td>
+						<td><div class='boardTile' id='tile189'></div></td>
+						<td><div class='boardTile' id='tile190'></div></td>
+						<td><div class='boardTile' id='tile191'></div></td>
+						<td><div class='boardTile' id='tile192'></div></td>
+						<td><div class='boardTile' id='tile193'></div></td>
+						<td><div class='boardTile' id='tile194'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile195'></div></td>
+						<td><div class='boardTile' id='tile196'></div></td>
+						<td><div class='boardTile' id='tile197'></div></td>
+						<td><div class='boardTile' id='tile198'></div></td>
+						<td><div class='boardTile' id='tile199'></div></td>
+						<td><div class='boardTile' id='tile200'></div></td>
+						<td><div class='boardTile' id='tile201'></div></td>
+						<td><div class='boardTile' id='tile202'></div></td>
+						<td><div class='boardTile' id='tile203'></div></td>
+						<td><div class='boardTile' id='tile204'></div></td>
+						<td><div class='boardTile' id='tile205'></div></td>
+						<td><div class='boardTile' id='tile206'></div></td>
+						<td><div class='boardTile' id='tile207'></div></td>
+						<td><div class='boardTile' id='tile208'></div></td>
+						<td><div class='boardTile' id='tile209'></div></td>
+					</tr>
+					<tr>
+						<td><div class='boardTile' id='tile210'></div></td>
+						<td><div class='boardTile' id='tile211'></div></td>
+						<td><div class='boardTile' id='tile212'></div></td>
+						<td><div class='boardTile' id='tile213'></div></td>
+						<td><div class='boardTile' id='tile214'></div></td>
+						<td><div class='boardTile' id='tile215'></div></td>
+						<td><div class='boardTile' id='tile216'></div></td>
+						<td><div class='boardTile' id='tile217'></div></td>
+						<td><div class='boardTile' id='tile218'></div></td>
+						<td><div class='boardTile' id='tile219'></div></td>
+						<td><div class='boardTile' id='tile220'></div></td>
+						<td><div class='boardTile' id='tile221'></div></td>
+						<td><div class='boardTile' id='tile222'></div></td>
+						<td><div class='boardTile' id='tile223'></div></td>
+						<td><div class='boardTile' id='tile224'></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script src="scrabble.js"></script>
+</html>
