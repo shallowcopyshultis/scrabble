@@ -20,7 +20,7 @@ if(isset($_POST['uLetters'])){
 	// print_r($horzArr);
 	// echo "multiDimJSONDecode - vertArr:";
 	// print_r($vertArr);
-	// echo "multiDimJSONDecode - filledArr:";
+	// echo "multiDimJSONDecode - filledArr:<pre>";
 	// print_r($filledArr);
 	//echo "</pre><br>";
 
@@ -45,23 +45,29 @@ if(isset($_POST['uLetters'])){
 	// print_r($vertArr);
 	//echo "</pre><br>";
 	
-	$wordList = array_merge($horzArr, $vertArr);
-	uasort($wordList, 'compareWords');
-	echo makeWordTable($wordList);
+	//$wordList = array_merge($horzArr, $vertArr);
+	//uasort($wordList, 'compareWords');
+	//echo makeWordTable($wordList);
 
 
 	//make a list of words that need only one letter
-	//$horzOnes = oneLetterList($horzArr);
-	//$vertOnes = oneLetterList($vertArr);
-	/*
-	echo "oneLetterList - horzOnes:<pre>";
-	print_r($horzOnes);
-	echo "oneLetterList - vertOnes:";
-	print_r($vertOnes);
-	echo "</pre><br>";
-/*	
+	$horzOnes = oneLetterList($horzArr);
+	$vertOnes = oneLetterList($vertArr);
+	
+//	echo "oneLetterList - horzOnes:<pre>";
+//	print_r($horzOnes);
+//	echo "oneLetterList - vertOnes:";
+//	print_r($vertOnes);
+//	echo "</pre><br>";
+
+	
 	// eliminate words that make fake orthogonal words
 	$wordList = array_merge($horzArr,$vertArr);
+	
+//	echo "array_merge - wordList:<pre>";
+//	print_r($wordList);
+//	echo "</pre><br>";
+	
 	$wordList = checkUnions($wordList,$horzOnes,$vertOnes,$filledArr,$numRows,$numCols); 
 
 	// echo "wordList:<pre>";
@@ -70,10 +76,7 @@ if(isset($_POST['uLetters'])){
 	
 	// sort the word list based on length then alphabet, then make the table
 	uasort($wordList, 'compareWords');
-	$table = makeWordTable($wordList);
-	
-	echo $table;*/
-
+	echo makeWordTable($wordList);
 }
 
 else

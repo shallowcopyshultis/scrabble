@@ -371,45 +371,80 @@ return: a list of validated words, NewWd() style
 function checkUnions($wordList,$horzOnes,$vertOnes,$filledArr,$numRows,$numCols){
 
 	foreach($wordList as $ind => $word){
-		$orient = $word[count($word)-1];
-		
+		$orient = $word[4];
 		$colliding = array();
-		$break = false;
-		foreach($word[5] as $newLetter){
+		foreach($word[3] as $newLetter){
 			$row = $newLetter[0];
 			$col = $newLetter[1];
 			$char = $newLetter[2];
+			$remove = false;
 			
 			if($orient=='horz'){
-				$positionKeys = array(($row+1).".".$col, ($row-1).".".$col);
-				$ones = $vertOnes;
+				$positionKeys[0] = array($row+1, $col, ($row+1).".".$col);
+				$positionKeys[1] = array($row-1, $col, ($row-1).".".$col);
+				$ones = $vertOnes[0];
+				$charCounts = $vertOnes[1];
 			}
 			else{
-				$positionKeys = array($row.".".($col+1), $row.".".($col-1));
-				$ones = $horzOnes;
+				$positionKeys[0] = array($row, $col+1, $row.".".($col+1));
+				$positionKeys[1] = array($row, $col-1, $row.".".($col-1));
+				$ones = $horzOnes[0];
+				$charCounts = $horzOnes[1];
 			}
-
+			
+			echo $wordList[$ind][2]." at (".$wordList[$ind][0].",".$wordList[$ind][1].") - $orient:<pre>";
+			
 			foreach($positionKeys as $pos){//for each space around the new tile
 				$collisionCount = 0;
-				//if the tile is adjacent to an existing word
-				if($pos>0 && $pos<$numRows*$numCols && in_array($pos,$filledArr)){
-					$collisionCount ++;
-					$tempLett = $row.",".$col;
-					//the new character doesn't make any orth words
-					if(!array_key_exists($char, $ones) || !in_array($tempLett,$ones[$char])){
-						$break = true;
-						break;
-					} 
-					//it might make a two-letter word but be between two letters, making an illegal word
-					else{
+				$row = $pos[0];
+				$col = $pos[1];
+				$key = $pos[2];
+				$posKey = '';
+				
+				//if the specified letter is on the board
+				if($row>=0 && $col>=0 && $row*$numCols+$col <= $numRows*$numCols){
+					echo "\t($row,$col) On the board. \n";
+					
+					//if this letter is adjacent to an old letter
+					if(in_array($key,$filledArr)){
+						echo "\t\tAdjacent. \n";
+						$collisionCount ++;
+						$posKey = $row.",".$col;
 						
+						//break, if the new character doesn't make any orth words
+						if(!array_key_exists($char, $ones) || !in_array($posKey,$ones[$char])){
+							echo "\t\t\tDoesn't make a word. \n";
+							$remove = true;
+							break;
+						}
+						//it might complete a two-letter word but be between two letters, making an illegal word
+						else if($collisionCount>1){
+							echo "\t\t\tMakes a word and collides more than once.\n";
+							$remove = true;
+							foreach($one[$char] as $oneInd => $oneKey){
+								//look for a word needing a letter at this position, which has more than two letters
+								if($posKey == $oneKey && $charCounts[$char][$oneInd] > 2){
+									echo "\t\t\t\tNo adjacent words use >2.\n";
+									$remove = false;
+									break;
+								} else
+									echo "\t\t\t\tAn adjacent word uses >2.\n";
+							}
+						} else
+							echo "\t\t\tMakes a word and doesn't collide more than once.\n";
 					}
-				}
+					else
+						echo "\t\tNot Adjacent. \n";
+				} else
+					echo "\t(row,$col)Not on the board. \n";
 			}
-			if($break){
+			if($remove){
+				echo "\tRemoved.\n";
 				unset($wordList[$ind]);
 				break;
-			}
+			} else
+				echo "\tNot Removed.\n";
+			echo "</pre>";
 		}
 	}
 	return $wordList;
