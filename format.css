@@ -101,7 +101,7 @@ button.wordOpt{
 }
 
 .outerWrapShell{
-	width: 1180px; 
+	width: 1210px; 
 	overflow:hidden; 
 	padding:0px;
 	float:center;
@@ -114,10 +114,14 @@ button.wordOpt{
 }
 
 .options{
-	width:430px;
+	width:460px;
 	float:left;
   height: 850px;
   overflow: auto;
+}
+
+.optionSummary{
+	text-align: center;
 }
 
 .board{

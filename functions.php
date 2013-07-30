@@ -268,6 +268,7 @@ function makeLetters($pattern, $match, $arr, $changingInd, $constInd, $ind){
 	$lastBrack = strrpos($reg,'}');
 	$last = false;
 	$const = $pattern[$constInd];
+	//echo "----<br>makeLetters<br>match: $match<br>reg: $reg<br>";
 	
 	//if the first bracket is also the last bracket, then only new letters remain
 	if($offset == $lastBrack){
@@ -277,12 +278,30 @@ function makeLetters($pattern, $match, $arr, $changingInd, $constInd, $ind){
 	else{//otherwise, we have to find where the new letters end
 		//make a new regex for the substring beginning with the first existing word
 		$newReg = '/'.substr($reg, $offset+1, $lastBrack-$offset).'/';
+		//echo "newReg: $newReg";
 		//find the position of the first existing word in the new word
 		$regMatch = array();
 		preg_match($newReg, $match, $regMatch, PREG_OFFSET_CAPTURE );
 		$offset = $regMatch[0][1];
 		$wordLen = strlen($pattern[2][$ind][2]);
 		$pattern[$changingInd] = $pattern[2][$ind][$changingInd];
+	}
+	
+	//there is a weird case where the last two letters are the same
+	$len = strlen($match);
+	if($len==2 && $match[0] == $match[1]){
+		//if the last two letters aren't both already laid
+		if(strpos($newReg, $match)==false){
+			//echo "<br>You're in the special case<br>";
+			$letters[0][$changingInd] = intval($pattern[$changingInd])-1;
+			$letters[0][$constInd] = intval($const);
+			$letters[0][2] = $match[0];
+			$arr = array_merge($arr, $letters);
+			//echo "last: $last<br>arr:";
+			//var_dump($arr);
+			//echo "-----<br><br>";
+			return $arr;
+		}
 	}
 	
 	if($offset>0){//make an array of each individual new letter
@@ -292,14 +311,19 @@ function makeLetters($pattern, $match, $arr, $changingInd, $constInd, $ind){
 			//if this isn't the end, these new letters appear before the old word's index
 			$changed = $varbl-$offset+$i;
 			//if this is the tail end, then these new letters begin at the current index
-			if($last)
+			if($last){
 				$changed = $varbl+$i;
+			}
 			$letters[$i][$changingInd] = intval($changed);
 			$letters[$i][$constInd] = intval($const);
 			$letters[$i][2] = substr($match, $i, 1);
 		}
 		$arr = array_merge($arr, $letters);
 	}
+	
+	//echo "last: $last<br>arr:";
+	//var_dump($arr);
+	//echo "-----<br><br>";
 	
 	if($last){//recursive termination
 		return $arr;
@@ -356,6 +380,14 @@ function oneLetterList($words){
 	}
 	
 	$ret = array($letts,$lens);
+	/*
+	echo "oneLetterList - letts:<br>";
+	var_dump($letts);
+	echo "oneLetterList - lens:<br>";
+	var_dump($lens);
+	echo "oneLetterList - ret:<br>";
+	var_dump($ret);
+	*/
 	return $ret;
 }
 
@@ -373,6 +405,7 @@ function checkUnions($wordList,$horzOnes,$vertOnes,$filledArr,$numRows,$numCols)
 	foreach($wordList as $ind => $word){
 		$orient = $word[4];
 		$colliding = array();
+		//echo "<pre>";
 		foreach($word[3] as $newLetter){
 			$row = $newLetter[0];
 			$col = $newLetter[1];
@@ -392,61 +425,72 @@ function checkUnions($wordList,$horzOnes,$vertOnes,$filledArr,$numRows,$numCols)
 				$charCounts = $horzOnes[1];
 			}
 			
-			echo $wordList[$ind][2]." at (".$wordList[$ind][0].",".$wordList[$ind][1].") - $orient:<pre>";
+			//echo $wordList[$ind][2]." at (".$wordList[$ind][0].",".$wordList[$ind][1].") - $orient: \n";
 			
 			foreach($positionKeys as $pos){//for each space around the new tile
 				$collisionCount = 0;
-				$row = $pos[0];
-				$col = $pos[1];
+				$adjRow = $pos[0];
+				$adjCol = $pos[1];
 				$key = $pos[2];
 				$posKey = '';
 				
 				//if the specified letter is on the board
-				if($row>=0 && $col>=0 && $row*$numCols+$col <= $numRows*$numCols){
-					echo "\t($row,$col) On the board. \n";
+				if($adjRow>=0 && $adjCol>=0 && $adjRow*$numCols+$adjCol <= $numRows*$numCols){
+					//echo "\t$char - ($adjRow,$adjCol) On the board. \n";
 					
 					//if this letter is adjacent to an old letter
 					if(in_array($key,$filledArr)){
-						echo "\t\tAdjacent. \n";
+						//echo "\t\tAdjacent. \n";
 						$collisionCount ++;
 						$posKey = $row.",".$col;
 						
 						//break, if the new character doesn't make any orth words
 						if(!array_key_exists($char, $ones) || !in_array($posKey,$ones[$char])){
-							echo "\t\t\tDoesn't make a word. \n";
+							//echo "\t\tDoesn't make a word. ";
+							if(!array_key_exists($char, $ones)){
+								//echo "That letter never makes a 1-letter word \n";
+							} else{
+								//echo "Here's the list: \n";
+								//var_dump($ones[$char]);
+							}
+							
 							$remove = true;
 							break;
 						}
 						//it might complete a two-letter word but be between two letters, making an illegal word
 						else if($collisionCount>1){
-							echo "\t\t\tMakes a word and collides more than once.\n";
+							//echo "\t\t\tMakes a word and collides more than once.\n";
 							$remove = true;
 							foreach($one[$char] as $oneInd => $oneKey){
 								//look for a word needing a letter at this position, which has more than two letters
 								if($posKey == $oneKey && $charCounts[$char][$oneInd] > 2){
-									echo "\t\t\t\tNo adjacent words use >2.\n";
+									//echo "\t\t\t\tNo adjacent words use >2.\n";
 									$remove = false;
 									break;
-								} else
-									echo "\t\t\t\tAn adjacent word uses >2.\n";
+								} else{
+									//echo "\t\t\t\tAn adjacent word uses >2.\n";
+								}
 							}
-						} else
-							echo "\t\t\tMakes a word and doesn't collide more than once.\n";
+						} else{
+							//echo "\t\t\tMakes a word and doesn't collide more than once.\n";
+						}
+					} else{
+						//echo "\t\tNot Adjacent. \n";
 					}
-					else
-						echo "\t\tNot Adjacent. \n";
-				} else
-					echo "\t(row,$col)Not on the board. \n";
+				} else{
+					//echo "\t(adjRow,$adjCol)Not on the board. \n";
+				}
 			}
 			if($remove){
-				echo "\tRemoved.\n";
+				//echo "\tRemoved.\n\n";
 				unset($wordList[$ind]);
 				break;
-			} else
-				echo "\tNot Removed.\n";
-			echo "</pre>";
+			} else{
+				//echo "\tNot Removed.\n\n";
+			}
 		}
 	}
+	//echo "</pre>";
 	return $wordList;
 }
 
@@ -458,6 +502,34 @@ function compareWords($a, $b){
 	$b = $b[2];
 	return (strlen($b)-strlen($a))*10 + strcmp($a,$b);
 }
+
+/**
+Give every word in the list a score by making the last element in the new letter array an array containing just the word's score.
+*/
+function score($wordList){
+	$score = 9001;
+	$i =0;
+	foreach($wordList as $word){
+		$newLetterCount = count($word[3]);
+		$word[3][$newLetterCount] = array($score);
+		$wordList[$i] = $word;
+		$i++;
+	}
+	return $wordList;
+}
+
+/**
+Make a summary, based on the word list
+*/
+function makeSummary($wordList){
+	$count = count($wordList);
+	$ret = "<div id='optionSummary' class='optionSummary'><br>";
+	$ret.= "OMG, you have <b><i>so many</i></b> options...<br>";
+	$ret.= "(like, $count options)<br>";
+	$ret .= "<br><div>";
+	return $ret;
+}
+
 
 /**
 Make and html table from a word list

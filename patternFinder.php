@@ -39,11 +39,11 @@ if(isset($_POST['uLetters'])){
 	$horzArr = buildList($contents,$horzArr,$uLetters);
 	$vertArr = buildList($contents,$vertArr,$uLetters);
 	
-	//echo "<br>buildList - horzArr:<pre>";
+	// echo "<br>buildList - horzArr:<pre>";
 	//print_r($horzArr);
 	// echo "buildList - vertArr:";
 	// print_r($vertArr);
-	//echo "</pre><br>";
+	// echo "</pre><br>";
 	
 	//$wordList = array_merge($horzArr, $vertArr);
 	//uasort($wordList, 'compareWords');
@@ -54,28 +54,27 @@ if(isset($_POST['uLetters'])){
 	$horzOnes = oneLetterList($horzArr);
 	$vertOnes = oneLetterList($vertArr);
 	
-//	echo "oneLetterList - horzOnes:<pre>";
-//	print_r($horzOnes);
-//	echo "oneLetterList - vertOnes:";
-//	print_r($vertOnes);
-//	echo "</pre><br>";
+	//	echo "oneLetterList - horzOnes:<pre>";
+	//	print_r($horzOnes);
+	//	echo "oneLetterList - vertOnes:";
+	//	print_r($vertOnes);
+	//	echo "</pre><br>";
 
 	
 	// eliminate words that make fake orthogonal words
 	$wordList = array_merge($horzArr,$vertArr);
-	
-//	echo "array_merge - wordList:<pre>";
-//	print_r($wordList);
-//	echo "</pre><br>";
-	
 	$wordList = checkUnions($wordList,$horzOnes,$vertOnes,$filledArr,$numRows,$numCols); 
 
-	// echo "wordList:<pre>";
+	// echo "checkUnions - wordList:<pre>";
 	// print_r($wordList);
 	// echo "</pre><br>";
 	
+	//find each word's score
+	$wordList = score($wordList);
+	
 	// sort the word list based on length then alphabet, then make the table
 	uasort($wordList, 'compareWords');
+	echo makeSummary($wordList);
 	echo makeWordTable($wordList);
 }
 

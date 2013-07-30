@@ -12,6 +12,7 @@ var horzPost = '';
 var vertPost = '';
 var selectedTile = '';
 var tempButton = '';
+var savePoints = 'false';
 
 //make all items with class "draggableImg" draggable
 $(".draggableImg").mousedown(function(){
@@ -127,6 +128,9 @@ function findOptions(){
 
 //show how the word button selected by the user should be played on the board
 function showPlay(button, clicked){
+	//make sure the points continue to be shown after mouseoff if clicked
+	savePoints = clicked;
+
 	//get rid of any previously played words
 	if(tempButton != ''){
 		hidePlay(tempButton, true);
@@ -134,8 +138,9 @@ function showPlay(button, clicked){
 
 	tempButton = button;
 	var tempLetters = phpLettArrDecode(button.attr('value'));
-	var i, row, col, letter, tileID;
-	for(i=0; i<tempLetters.length; i++){
+	var i, row, col, letter, tileID, html;
+	i=0;
+	while(i<tempLetters.length-1){
 		row = parseInt(tempLetters[i][0]);
 		col = parseInt(tempLetters[i][1]);
 		letter = tempLetters[i][2];
@@ -143,18 +148,28 @@ function showPlay(button, clicked){
 		$(tileID).attr('src',"icons/"+letter+".png");
 		$(tileID).addClass('tempLetter');
 		$(tileID).attr('enabled',clicked);
-		button.attr('enabled','true');
+		i++;
 	}
+	if(button.attr('enabled') != 'true' && clicked == 'false'){
+		html = button.html();
+		if(html.indexOf('(') < 0){//if points aren't being shown already
+			//show how many points the word is worth
+			var points = parseInt(tempLetters[i]);
+			button.html(html+" ("+points+")");
+		}
+	}
+	button.attr('enabled','true');
 }
 
 //hide the last temporary play made
 function hidePlay(button, replacing){
-	var i, row, col, tileID;
+	var i, row, col, tileID, clicked, pointStr, html;
 	var temp = phpLettArrDecode(button.attr('value'));
 	
 	//remove any already played letters
 	if(temp.length>0){
-		for(i=0; i<temp.length; i++){
+		i=0;
+		while(i<temp.length-1){
 			row = parseInt(temp[i][0]);
 			col = parseInt(temp[i][1]);
 			tileID = "#bTileImg"+ (row*cols+col).toString();
@@ -163,6 +178,14 @@ function hidePlay(button, replacing){
 				$(tileID).removeClass('tempLetter');
 				button.attr('enabled','false');
 			}
+			i++;
+		}
+		
+		//remove the point value from the end of the word, if necessary
+		html = button.html();
+		if(html.indexOf('(') >= 0 && savePoints == 'false'){
+			pointStr = " ("+parseInt(temp[i])+")";
+			button.html(html.substring(0, html.length- pointStr.length));
 		}
 	}
 }
@@ -178,7 +201,6 @@ function phpLettArrDecode(str){
 		}
 		letterArray[i] = temp;
 	}
-	console.log(letterArray);
 	return letterArray;
 }
 
