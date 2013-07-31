@@ -23,10 +23,6 @@ if(isset($_POST['uLetters'])){
 	// echo "multiDimJSONDecode - filledArr:<pre>";
 	// print_r($filledArr);
 	//echo "</pre><br>";
-
-	foreach($vertArr as $word){
-		echo "(".$word[0].",".$word[1].") ".$word[2]."<br>";
-	}
 	
 	//make a list of patterns to match the given words, with only user letters added, that fit on the board
 	$horzArr = patternArr($horzArr,$uLetters,0);

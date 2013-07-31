@@ -317,7 +317,7 @@ function acrossWrds(tiles){
 //return: [[row, col, word, blanksBefore, blanksAfter],...]
 function downWrds(tiles){
 	//sort the tiles from top to bottom, left to right
-	tiles.sort(function(a,b){return (a[1]-b[1])*15*15+a[0]-b[0]});
+	tiles.sort(function(a,b){return (a[1]-b[1])*rows*cols+a[0]-b[0]});
 
 	//get the horizontal words
 	var currWord = "";
