@@ -28,6 +28,21 @@ function multiDimJSONDecode($encoded, $delims,$label){
 }	
 
 /**
+Print all of these arrays in a readable fashion
+$srcFunc: the name of the function that generated the array
+$varName: the name of the array
+$arr: the array to be printed
+*/
+function printArr($srcFunc, $varName, $arr){
+	echo "------------------------------------------------------------------------------
+	<br>$srcFunc - $varName:<pre>";
+	print_r($arr);
+	echo "</pre>------------------------------------------------------------------------------
+	<br>";
+}
+
+
+/**
 I'm sick of json_decode being different between php versions.  This will decode a non-associative json encoded array from javascript pretty well no matter what
 */
 function wordDecode($encoded){

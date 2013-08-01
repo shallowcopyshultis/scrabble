@@ -16,58 +16,37 @@ if(isset($_POST['uLetters'])){
 	$vertArr = multiDimJSONDecode($vertArr, "_","vert");
 	$filledArr = multiDimJSONDecode($filledArr, "", "");//[ "row.col", ... ]
 
-	// echo "multiDimJSONDecode - horzArr:<pre>";
-	// print_r($horzArr);
-	// echo "multiDimJSONDecode - vertArr:";
-	// print_r($vertArr);
-	// echo "multiDimJSONDecode - filledArr:<pre>";
-	// print_r($filledArr);
-	//echo "</pre><br>";
+	//printArr('multiDimJSONDecode', 'horzArr', $horzArr);
+	//printArr('multiDimJSONDecode', 'vertArr', $vertArr);
+	//printArr('multiDimJSONDecode', 'filledArr', $filledArr);
 	
 	//make a list of patterns to match the given words, with only user letters added, that fit on the board
 	$horzArr = patternArr($horzArr,$uLetters,0);
 	$vertArr = patternArr($vertArr,$uLetters,1);
 
-	//echo "patternArr - horzArr:<pre>";
-	//print_r($horzArr);
-	//echo "patternArr - vertArr:";
-	//print_r($vertArr);
-	//echo "</pre><br>";
+	// printArr('patternArr', 'horzArr', $horzArr);
+	// printArr('patternArr', 'vertArr', $vertArr);
 	
 	//create a list possible words
 	$contents = file_get_contents('dictionary.txt');
 	$horzArr = buildList($contents,$horzArr,$uLetters);
 	$vertArr = buildList($contents,$vertArr,$uLetters);
 	
-	// echo "<br>buildList - horzArr:<pre>";
-	//print_r($horzArr);
-	// echo "buildList - vertArr:";
-	// print_r($vertArr);
-	// echo "</pre><br>";
-	
-	//$wordList = array_merge($horzArr, $vertArr);
-	//uasort($wordList, 'compareWords');
-	//echo makeWordTable($wordList);
-
+	// printArr('buildList', 'horzArr', $horzArr);
+	// printArr('buildList', 'vertArr', $vertArr);
 
 	//make a list of words that need only one letter
 	$horzOnes = oneLetterList($horzArr);
 	$vertOnes = oneLetterList($vertArr);
 	
-	//	echo "oneLetterList - horzOnes:<pre>";
-	//	print_r($horzOnes);
-	//	echo "oneLetterList - vertOnes:";
-	//	print_r($vertOnes);
-	//	echo "</pre><br>";
+	// printArr('oneLetterList', 'horzOnes', $horzOnes);
+	// printArr('oneLetterList', 'vertOnes', $vertOnes);
 
-	
 	// eliminate words that make fake orthogonal words
 	$wordList = array_merge($horzArr,$vertArr);
 	$wordList = checkUnions($wordList,$horzOnes,$vertOnes,$filledArr,$numRows,$numCols); 
 
-	// echo "checkUnions - wordList:<pre>";
-	// print_r($wordList);
-	// echo "</pre><br>";
+	// printArr('checkUnions', 'wordList', $wordList);
 	
 	//find each word's score
 	$wordList = score($wordList);
