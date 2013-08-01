@@ -500,7 +500,7 @@ compare words based on length, then alphabet
 function compareWords($a, $b){
 	$a = $a[2];
 	$b = $b[2];
-	return (strlen($b)-strlen($a))*10 + strcmp($a,$b);
+	return (strlen($b)-strlen($a))*100 + strcmp($a,$b);
 }
 
 /**
@@ -509,13 +509,14 @@ Give every word in the list a score by making the last element in the new letter
 function score($wordList){
 	$score = 9001;
 	$i =0;
+	$newList = array();
 	foreach($wordList as $word){
 		$newLetterCount = count($word[3]);
 		$word[3][$newLetterCount] = array($score);
-		$wordList[$i] = $word;
+		$newList[$i] = $word;
 		$i++;
 	}
-	return $wordList;
+	return $newList;
 }
 
 /**
