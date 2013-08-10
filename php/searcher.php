@@ -7,8 +7,8 @@ if(isset($_GET['letters']) || isset($_POST['letters'])){
 		$letters = $_POST['letters'];
 	
 	//read in the dictionary
-	$dict = 'dictionary.txt';
-	$index = 'index.txt';
+	$dict = '../txt/dictionary.txt';
+	$index = '../txt/index.txt';
 	$contents = file_get_contents($index);
 
 	//get all the combinations of the letters

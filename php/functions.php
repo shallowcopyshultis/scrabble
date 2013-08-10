@@ -1,11 +1,11 @@
 <?php
 
 /**
-Decode a list of delimited JSON arrays into and array of arrays. 
-Ex: multiDimJSONDecode('{row,col,wrd,bfr,aft}_{row,col,wrd,bfr,aft}' , '_', 'lbl') -> [[row,col,wrd,bfr,aft,'lbl'],[row,col,wrd,bfr,aft,'lbl']]
-$encoded: the list of arrays. 
-$delim: a string of delimiters (in order from 'outermost' array to 'innermost')
-$label: a label to be put at the end of each innermost array ('' will cancel this operation)
+*Decode a list of delimited JSON arrays into and array of arrays. 
+*Ex: multiDimJSONDecode('{row,col,wrd,bfr,aft}_{row,col,wrd,bfr,aft}' , '_', 'lbl') -> [[row,col,wrd,bfr,aft,'lbl'],[row,col,wrd,bfr,aft,'lbl']]
+*$encoded: the list of arrays. 
+*$delim: a string of delimiters (in order from 'outermost' array to 'innermost')
+*$label: a label to be put at the end of each innermost array ('' will cancel this operation)
 */ 
 function multiDimJSONDecode($encoded, $delims,$label){
 	if($delims == ''){
@@ -28,10 +28,10 @@ function multiDimJSONDecode($encoded, $delims,$label){
 }	
 
 /**
-Print all of these arrays in a readable fashion
-$srcFunc: the name of the function that generated the array
-$varName: the name of the array
-$arr: the array to be printed
+*Print all of these arrays in a readable fashion
+*$srcFunc: the name of the function that generated the array
+*$varName: the name of the array
+*$arr: the array to be printed
 */
 function printArr($srcFunc, $varName, $arr){
 	echo "------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ function printArr($srcFunc, $varName, $arr){
 
 
 /**
-I'm sick of json_decode being different between php versions.  This will decode a non-associative json encoded array from javascript pretty well no matter what
+*I'm sick of json_decode being different between php versions.  This will decode a non-associative json encoded array from javascript pretty well no matter what
 */
 function wordDecode($encoded){
 	$arr = explode(',',$encoded);
@@ -54,11 +54,11 @@ function wordDecode($encoded){
 }
 
 /**
-Returns an array of regex patterns based on word and user letter info
-$wordArr: An array of words object (with position, etc)
-$uLetts: The user's letters in the form if 'ABC'
-$ind: the index in the word where the 'line' the word is on can be found (for horz words, its the row, for vert words, its the col)
-returns: [ [row, col, word, blanksBfr, blanksAft, pattern, label], ... ]
+*Returns an array of regex patterns based on word and user letter info
+*$wordArr: An array of words object (with position, etc)
+*$uLetts: The user's letters in the form if 'ABC'
+*$ind: the index in the word where the 'line' the word is on can be found (for horz words, its the row, for vert words, its the col)
+*returns: [ [row, col, word, blanksBfr, blanksAft, pattern, label], ... ]
 */
 function patternArr($wordArr, $uLetts, $ind){
 	$patterns = array();
@@ -108,9 +108,9 @@ function patternArr($wordArr, $uLetts, $ind){
 }
 
 /**
-Join two regular expressions into one that will catch both words in series on the board
-%one / $two: the one that should come first/ second
-%uLetts: the user's letters -- could parse this, but it'd be more expensive
+*Join two regular expressions into one that will catch both words in series on the board
+*%one / $two: the one that should come first/ second
+*%uLetts: the user's letters -- could parse this, but it'd be more expensive
 */
 function joinRegx($one, $two, $uLetts){
 	//get rid of the line-beginning part of the most recent word
@@ -128,7 +128,7 @@ function joinRegx($one, $two, $uLetts){
 }
 
 /**
-Decrement the 'letters after' portion of a regex
+*Decrement the 'letters after' portion of a regex
 */
 function decLettsAfter($regx){
 	$offset = strrpos($regx, ',');
@@ -138,8 +138,8 @@ function decLettsAfter($regx){
 }
 
 /**
-Decodes the $patterns array with embeded word info generated in patternArr()
-return: [ [row, col, wordArr, regx, label], ...]
+*Decodes the $patterns array with embeded word info generated in patternArr()
+*return: [ [row, col, wordArr, regx, label], ...]
 */
 function decodePatternsArr($patterns, $label){
 	$ret = array();
@@ -178,8 +178,8 @@ function decodePatternsArr($patterns, $label){
 }
 
 /**
-Check if the regex will only match the existing word--no letters before or after (eg /\s[STR]{0,0}WORD[STR]{0,0}\s/m)
-return: true if the pattern only matches one letter
+*Check if the regex will only match the existing word--no letters before or after (eg /\s[STR]{0,0}WORD[STR]{0,0}\s/m)
+*return: true if the pattern only matches one letter
 */
 function checkOneLettReg($reg){
 	$charCounts = count_chars($reg, 1);
@@ -200,11 +200,11 @@ function checkOneLettReg($reg){
 }
 
 /**
-Create a list of words which match the given regex patterns as well as letter count constraints
-$dict: the contents of the dictionary file
-$patterns: an array of the patterns to match
-$uLttrs: a string of user letters
-return: [ [row, col, match, label], ... ]
+*Create a list of words which match the given regex patterns as well as letter count constraints
+*$dict: the contents of the dictionary file
+*$patterns: an array of the patterns to match
+*$uLttrs: a string of user letters
+*return: [ [row, col, match, label], ... ]
 */
 function buildList($contents,$patterns,$uLttrs){
 	$wordList = array();
@@ -243,9 +243,9 @@ function buildList($contents,$patterns,$uLttrs){
 }
 
 /**
-Find the info needed to lay a new word
-$pattern: the pattern that birthed this word
-$match: the new word
+*Find the info needed to lay a new word
+*$pattern: the pattern that birthed this word
+*$match: the new word
 */
 function newWd($pattern, $match){
 	//if the word is vertical, the "changing" index is the row
@@ -275,10 +275,11 @@ function newWd($pattern, $match){
 }
 
 /**
-Make an array of the new letters need to make a word
+*Make an array of the new letters need to make a word
 */
 function makeLetters($pattern, $match, $arr, $changingInd, $constInd, $ind){
 	$reg = $pattern[3];
+	$newReg = ' ';
 	$offset = strpos($reg,'}');
 	$lastBrack = strrpos($reg,'}');
 	$last = false;
@@ -353,8 +354,8 @@ function makeLetters($pattern, $match, $arr, $changingInd, $constInd, $ind){
 }
 
 /**
-Take in a list of words and return only the words that need one extra letter
-$words: must be an array of words formatted as the output of newWd()
+*Take in a list of words and return only the words that need one extra letter
+*$words: must be an array of words formatted as the output of newWd()
 */
 function oneLetterWds($words){
 	$ret = array();
@@ -368,11 +369,11 @@ function oneLetterWds($words){
 }
 
 /**
-Take in a list of words and return an array of: 
- -the letters that create new words by themselves, and the position where they do this ($ret[0] aka $letts)
- -the length of the word created by adding the letter ($ret[1] aka $lens)
-$words: must be an array of words formatted as the output of newWd()
-return: [ ["A" => ['row,col', 'row,col'], ...], ["A" => [2, 6], ...] ]
+*Take in a list of words and return an array of: 
+* -the letters that create new words by themselves, and the position where they do this ($ret[0] aka $letts)
+* -the length of the word created by adding the letter ($ret[1] aka $lens)
+*$words: must be an array of words formatted as the output of newWd()
+*return: [ ["A" => ['row,col', 'row,col'], ...], ["A" => [2, 6], ...] ]
 */
 function oneLetterList($words){
 	$letts = array();
@@ -408,12 +409,12 @@ function oneLetterList($words){
 
 
 /**
-Make sure that when a word is laid, it doesn't make an invalid orthogonal word.  If it does, then remove the word is removed from the word lis
-$wordList: an array of the words you want to lay on the board (return value of NewWd() style)
-$horzOnes / $vertOnes: a list of the valid letters which will make a horizantal two-letter word (return value of oneLetterList() )
-$filledArr: an array listing all filled tiles on the board
-$numRows / $numCols: the number of rows/cols on the board
-return: a list of validated words, NewWd() style
+*Make sure that when a word is laid, it doesn't make an invalid orthogonal word.  If it does, then remove the word is removed from the word lis
+*$wordList: an array of the words you want to lay on the board (return value of NewWd() style)
+*$horzOnes / $vertOnes: a list of the valid letters which will make a horizantal two-letter word (return value of oneLetterList() )
+*$filledArr: an array listing all filled tiles on the board
+*$numRows / $numCols: the number of rows/cols on the board
+*return: a list of validated words, NewWd() style
 */
 function checkUnions($wordList,$horzOnes,$vertOnes,$filledArr,$numRows,$numCols){
 
@@ -510,7 +511,7 @@ function checkUnions($wordList,$horzOnes,$vertOnes,$filledArr,$numRows,$numCols)
 }
 
 /**
-compare words based on length, then alphabet
+*compare words based on length, then alphabet
 */
 function compareWords($a, $b){
 	$a = $a[2];
@@ -519,7 +520,7 @@ function compareWords($a, $b){
 }
 
 /**
-Give every word in the list a score by making the last element in the new letter array an array containing just the word's score.
+*Give every word in the list a score by making the last element in the new letter array an array containing just the word's score.
 */
 function score($wordList){
 	$score = 9001;
@@ -535,7 +536,7 @@ function score($wordList){
 }
 
 /**
-Make a summary, based on the word list
+*Make a summary, based on the word list
 */
 function makeSummary($wordList){
 	$count = count($wordList);
@@ -548,7 +549,7 @@ function makeSummary($wordList){
 
 
 /**
-Make and html table from a word list
+*Make and html table from a word list
 */
 function makeWordTable($wordList){
 	$table = '';

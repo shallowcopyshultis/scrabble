@@ -4,14 +4,14 @@ ini_set('memory_limit', '512M');
 header("Content-type: text/plain");
 exec ('chmod 777 *');
 
-$file = 'dictionary.txt';
+$file = '../txt/dictionary.txt';
 $lines = file($file);
 
 /*Make a basic index--one word per line*/
 $arr = array();
 $i = 0;
 $used = array();
-$file = 'index.txt';
+$file = '../txt/index.txt';
 
 // foreach($lines as $line){
 // 	$arr = (array)count_chars($line, 1);
@@ -28,7 +28,7 @@ $file = 'index.txt';
 // }
 
 
-// $lines = file('betterIndex.txt');
+// $lines = file('../txt/betterIndex.txt');
 // $patterns = array();
 // $i = 0;
 // foreach($lines as $line){
@@ -43,7 +43,7 @@ $file = 'index.txt';
 /*Now consolidate all words with a certain charcter count to a single line*/
 $lines = file($file);
 $contents = file_get_contents($file);
-$file = 'betterIndex.txt';
+$file = '../txt/betterIndex.txt';
 $matches = array();
 foreach($lines as $line){
 	//get the character count in regex form

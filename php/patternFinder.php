@@ -28,7 +28,7 @@ if(isset($_POST['uLetters'])){
 	// printArr('patternArr', 'vertArr', $vertArr);
 	
 	//create a list possible words
-	$contents = file_get_contents('dictionary.txt');
+	$contents = file_get_contents('../txt/dictionary.txt');
 	$horzArr = buildList($contents,$horzArr,$uLetters);
 	$vertArr = buildList($contents,$vertArr,$uLetters);
 	

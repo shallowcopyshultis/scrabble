@@ -111,7 +111,7 @@ function findOptions(){
 		filledPost = JSON.stringify(filledSpots);
 		
 		//send the post data to the pattern finder
-		$.post("patternFinder.php",
+		$.post("php/patternFinder.php",
 			{uLetters: userLettersPost, vert: vertPost, horz: horzPost, filled: filledPost, numRows: rows, numCols: cols},
 			function(data){
 				$("#optionData").html(data);//print the data
