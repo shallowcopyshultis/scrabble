@@ -14,14 +14,35 @@ var selectedTile = '';
 var tempButton = '';
 var savePoints = 'false';
 
+//designate all of the specical tiles by adding clsses
+loadSpecialTiles('wwf');
+
 //make all items with class "draggableImg" draggable
 $(".draggableImg").mousedown(function(){
   imgSrc = $(this).attr('src');
   imgVal = $(this).attr('value');
 });
 
+
 //put an image in each tile place holder
-$(".boardTile").append("<img class='tileImg bTileImg' src='icons/blank.png'/>");
+$(".boardTile").each(function( index ) {
+	if($(this).hasClass('twTile')){
+		$(this).append("<img class='tileImg bTileImg twTileImg' src='icons/tws.png'/>");
+	}
+	else if($(this).hasClass('dwTile')){
+		$(this).append("<img class='tileImg bTileImg dwTileImg' src='icons/dws.png'/>");
+	}
+	else if($(this).hasClass('tlTile')){
+		$(this).append("<img class='tileImg bTileImg tlTileImg' src='icons/tls.png'/>");
+	}
+	else if($(this).hasClass('dlTile')){
+		$(this).append("<img class='tileImg bTileImg dlTileImg' src='icons/dls.png'/>");
+	}
+	else{
+		$(this).append("<img class='tileImg bTileImg' src='icons/blank.png'/>");
+	}
+});
+
 $(".userTile").append("<img class='tileImg uTileImg' src='icons/clear.gif'/>");
 
 //Tell the browser that we can drop on the drop zones
@@ -530,4 +551,53 @@ function letterPoints(letter){
 			val=0;
 		}
 	return val;
+}
+
+//Add the special tiles, based on the user's chosen board
+function loadSpecialTiles(boardName){
+	var i, squares;
+	if(typeof(boardName)==='undefined') {//default (scrabble board)
+		//triple words
+		squares = ["00", "07", "14", "105", "112", "210", "217", "224"];
+		for(i=0; i<squares.length; i++)
+			$('#tile'+squares[i]).addClass('twTile');
+
+		//double words
+		squares = ["16", "32", "48", "64", "28", "42", "56", "70", "154", "168", "182", "196", "160", "176", "192", "208"];
+		for(i=0; i<squares.length; i++)
+			$('#tile'+squares[i]).addClass('dwTile');
+		
+		//triple letters
+		squares = ["20", "24", "76", "80", "84", "88", "136", "140", "144", "148", "200", "204"];
+		for(i=0; i<squares.length; i++)
+			$('#tile'+squares[i]).addClass('tlTile');
+
+		//double letters
+		squares = ["03", "11", "36", "38", "45", "52", "59", "92", "96", "98", "102", "108", "116", "122", "126", "128", "132", "165", "172", "179", "186", "188", "213", "221"];
+		for(i=0; i<squares.length; i++)
+			$('#tile'+squares[i]).addClass('dlTile');
+	}
+
+	else if(boardName =='wwf') {
+		//triple words
+		squares = ["03", "11", "45", "59", "165", "179", "213", "221"];
+		for(i=0; i<squares.length; i++)
+			$('#tile'+squares[i]).addClass('twTile');
+
+		//double words
+		squares = ["20", "24", "52", "76", "88", "108", "116", "136", "148", "172", "200", "204"];
+		for(i=0; i<squares.length; i++)
+			$('#tile'+squares[i]).addClass('dwTile');
+		
+		//triple letters
+		squares = ["06", "08", "48", "56", "80", "84", "140", "144", "168", "176", "216", "218", "90", "104", "120", "134"];
+		for(i=0; i<squares.length; i++)
+			$('#tile'+squares[i]).addClass('tlTile');
+
+		//double letters
+		squares = ["17", "27", "31", "34", "40", "43", "66", "68", "72", "94", "100", "124", "130", "152", "156", "158", "162", "181", "184", "190", "193", "197", "207", "62"];
+		for(i=0; i<squares.length; i++)
+			$('#tile'+squares[i]).addClass('dlTile');
+	 }
+
 }
