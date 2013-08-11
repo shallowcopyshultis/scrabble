@@ -112,35 +112,20 @@ function toggleOptButtonEnable(button){
 //find all of the options that the user can play
 function findOptions(){
 	//get the letters and words from the board
+	//this will fill the 'filledSpots', 'horzWords', and 'vertWords' arrays
 	getUserLetters();
 	buildWords();
 	
 	if(filledSpots.length != 0){//if there are letters on the board
-		//Encode the words so they can be passed as post values
-		horz = "";
-		for(var i=0; i<horzWords.length; i++){
-			horz = horz+JSON.stringify(horzWords[i])+"_";
-		}
-		horzPost = horz.substring(0, horz.length-1);
-		
-		vert = "";
-		for(var i=0; i<vertWords.length; i++){
-			vert = vert+JSON.stringify(vertWords[i])+"_";
-		}
-		vertPost = vert.substring(0, vert.length-1);
-		
-		filledPost = JSON.stringify(filledSpots);
+		console.log(filledSpots);
+		console.log(vertWords);
+		console.log(horzWords);
 		
 		//send the post data to the pattern finder
-		$.post("php/patternFinder.php",
-			{uLetters: userLettersPost, vert: vertPost, horz: horzPost, filled: filledPost, numRows: rows, numCols: cols},
-			function(data){
-				$("#optionData").html(data);//print the data
-				$(".wordOpt").mouseover(function(){ showPlay($(this), 'false'); });
-				$(".wordOpt").mouseout(function(){ hidePlay($(this, false)); });
-				$(".wordOpt").click(function(){ showPlay($(this), 'true'); });
-			});
-		
+		// $("#optionData").html(data);//print the data
+		// $(".wordOpt").mouseover(function(){ showPlay($(this), 'false'); });
+		// $(".wordOpt").mouseout(function(){ hidePlay($(this, false)); });
+		// $(".wordOpt").click(function(){ showPlay($(this), 'true'); });
 	}
 	else{//if there are no letters on the board
 		$("#optionData").html('<br>There were no letters on the board...');
@@ -269,7 +254,17 @@ function buildWords(){
 //returns the most recently laid tiles
 function getNewestTiles(){
 	var currTile;
+
+	console.log("laidLetters: ");
+	for(var i=0; i<laidLetters.length; i++)
+		console.log(laidLetters[i].toString());
+
 	var list = laidLetters.slice();//do a deep copy, so the real deal aint jacked
+	
+	console.log("list after slice(): ");
+	for(var i=0; i<list.length; i++)
+		console.log(list[i].toString());
+
 	var ret = new Array();
 	while(list.length>0){
 		currTile = list[list.length-1][2];
@@ -281,6 +276,11 @@ function getNewestTiles(){
 		ret[ret.length] = list[list.length-1];
 		list = list.splice(0,list.length-1);
 	}
+
+	console.log("ret: ");
+	for(var i=0; i<ret.length; i++)
+		console.log(ret[i].toString());
+
 	return ret;
 }
 
@@ -456,7 +456,7 @@ function layLetter(targ){
 	targ.attr('src', imgSrc);
 	
 	//determine if the target is the board or a user tile
-	if(targ.parent().attr('class') == 'boardTile'){
+	if(targ.parent().hasClass('boardTile')){
 		laidLetters[laidLetters.length] = [imgVal,letterPoints(imgVal),tileNo,getSpecial(tileNo)];
 		undoHist[undoHist.length] = 'board';
 	}
