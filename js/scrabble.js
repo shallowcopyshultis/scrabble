@@ -456,7 +456,7 @@ function layLetter(targ){
 	targ.attr('src', imgSrc);
 	
 	//determine if the target is the board or a user tile
-	if(targ.parent().attr('class') == 'boardTile'){
+	if(targ.parent().hasClass('boardTile')){
 		laidLetters[laidLetters.length] = [imgVal,letterPoints(imgVal),tileNo,getSpecial(tileNo)];
 		undoHist[undoHist.length] = 'board';
 	}
