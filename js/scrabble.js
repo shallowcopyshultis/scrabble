@@ -115,7 +115,7 @@ function findOptions(){
 	getUserLetters();
 	buildWords();
 	
-	if(filledSpots.length != 0){//if there are letters on the board
+	if(filledSpots.length != 0 && userLetters.length != 0){//if there are letters on the board
 		//Encode the words so they can be passed as post values
 		horz = "";
 		for(var i=0; i<horzWords.length; i++){
@@ -142,8 +142,11 @@ function findOptions(){
 			});
 		
 	}
-	else{//if there are no letters on the board
-		$("#optionData").html('<br>There were no letters on the board...');
+	else if(filledSpots.length == 0){//if there are no letters on the board
+		$("#optionData").html('<br>There are no letters on the board...');
+	}
+	else{
+		$("#optionData").html('<br>There are no new letters to lay...');
 	}
 }
 
